@@ -59,23 +59,25 @@ def get_variables(dictionary):
     tobuy_date, tosell_date = '', ''
     highest = max(dictionary['volume'])
     max_price = dictionary['price'][0]
-    min_price = max_price
+    min_price = 0
     profit = 0
-    min_index, max_index = 0, 0
+    min_index, max_index = 1, 0
 
-    index = 0
-    for x in dictionary['price']:
+    index = -1
+    for price in dictionary['price']:
         index += 1
-        if x - min_price > profit and x > min_price:
-            profit = x - min_price
-            max_index = index
-        if x < min_price:
+        if price < min_price:
             min_index = index
-            min_price = x
+            min_price = price
+        if price - min_price > profit and price > min_price:
+            profit = price - min_price
+            max_index = index
+            max_price = price
+
 
     tobuy_date = dictionary['date'][min_index]
     tosell_date = dictionary['date'][max_index]
 
-    return print(f'Hightest volume was on {highest}\n'
+    return print(f'Hightest volume was {highest}\n'
                  f'For maximum profits, one should buy on {tobuy_date}'
                  f' and sell on {tosell_date}')
