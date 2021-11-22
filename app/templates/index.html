@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Hi</h1>
+        <form action="/result" method="POST">
+            <label for="startdate">Start date:</label><br>
+            <input type="text" id="startdate" name="startdate"><br>
+            <label for="enddate">End date:</label><br>
+            <input type="text" id="enddate" name="enddate"><br>
+            <input type="submit" value="Submit">
+        </form>
+{% endblock %}
