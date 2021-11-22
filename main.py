@@ -1,11 +1,15 @@
-import functions
+from flask import Flask
 
-startdate = '2020-03-01'
-ts_startdate = functions.get_timestamp(startdate)
+import views
 
-enddate = '2021-08-01'
-ts_enddate = functions.get_timestamp(enddate)
 
-btcdict = functions.get_btc_data(ts_startdate, ts_enddate, startdate)
 
-functions.get_variables(btcdict)
+app = Flask(__name__)
+
+app.add_url_rule('/', view_func=views.index)
+app.add_url_rule('/result', view_func=views.result, methods=['POST'])
+
+app
+
+if __name__ == "__main__":
+    app.run()

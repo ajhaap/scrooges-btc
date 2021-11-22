@@ -1,13 +1,10 @@
 from flask import render_template, request
-from app import app
 import functions
 
-@app.route('/')
-@app.route('/index')
+
 def index():
     return render_template('index.html')
 
-@app.route('/result', methods=['POST'])
 def result():
     startdate = request.form.get('startdate')
     enddate = request.form.get('enddate')

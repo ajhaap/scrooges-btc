@@ -1,1 +1,0 @@
-FLASK_APP=scroogesbtc.py
