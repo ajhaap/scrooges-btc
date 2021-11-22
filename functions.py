@@ -12,7 +12,10 @@ def get_timestamp(date):
     return int(timestamp)
 
 
-def get_btc_data(ts_startdate, ts_enddate, startdate):
+def get_btc_data(startdate, enddate):
+
+    ts_startdate = get_timestamp(startdate)
+    ts_enddate = get_timestamp(enddate)
 
     date_index = False
     list_index = ''
@@ -48,36 +51,47 @@ def get_btc_data(ts_startdate, ts_enddate, startdate):
     if date_index:
         volumes = volumes[list_index:]
 
-    keys = ['date', 'price', 'volume']
-    values = [utcdates, prices, volumes]
-    btcdict = dict(zip(keys, values))
+    highest = max(volumes)
 
-    return btcdict
-
-
-def get_variables(dictionary):
-    tobuy_date, tosell_date = '', ''
-    highest = max(dictionary['volume'])
-    max_price = dictionary['price'][0]
+    max_price = prices[0]
+    current_price = max_price
     min_price = 0
-    profit = 0
     min_index, max_index = 1, 0
-
+    profit = 0
     index = -1
-    for price in dictionary['price']:
+
+    bearish, current_bearish = 0, 0
+
+    for price in prices:
+        """The following gets the days to buy and sell for best profit"""
         index += 1
+
         if price < min_price:
             min_index = index
             min_price = price
+
         if price - min_price > profit and price > min_price:
             profit = price - min_price
             max_index = index
             max_price = price
+        """The following gets the longest downward (bearish) trend in prices"""
+        if price - current_price < 0:
+            current_bearish += 1
+            if current_bearish > bearish:
+                bearish = current_bearish
 
+        if price - current_price > 0:
+            if current_bearish > bearish:
+                current_bearish = bearish
+            current_bearish = 0
 
-    tobuy_date = dictionary['date'][min_index]
-    tosell_date = dictionary['date'][max_index]
+        current_price = price
 
-    return print(f'Hightest volume was {highest}\n'
-                 f'For maximum profits, one should buy on {tobuy_date}'
-                 f' and sell on {tosell_date}')
+    if min_index == max_index:
+        buyorsell = None
+    else:
+        buyorsell = (utcdates[min_index], utcdates[max_index])
+
+    results = {'bearish': bearish, 'highest': highest, 'buyorsell': buyorsell}
+
+    return results
