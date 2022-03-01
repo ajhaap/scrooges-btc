@@ -4,9 +4,11 @@
     <h1>Hi</h1>
         <form action="/result" method="POST">
             <label for="startdate">Start date:</label><br>
-            <input type="text" id="startdate" name="startdate"><br>
+            <input type="date" min="2012-11-25"
+                   id="startdate" name="startdate"><br>
             <label for="enddate">End date:</label><br>
-            <input type="text" id="enddate" name="enddate"><br>
+            <input type="date" min="2012-11-25"
+                   id="enddate" name="enddate"><br>
             <input type="submit" value="Submit">
         </form>
 {% endblock %}
